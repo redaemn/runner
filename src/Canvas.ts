@@ -1,9 +1,9 @@
 export class Canvas {
-    
+
     private _ctx: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
     private isAutomaticallyResizing: boolean = false;
-    
+
     constructor() {
         const canvasElements = document.getElementsByTagName('canvas');
         if (canvasElements.length > 0) {
@@ -14,7 +14,7 @@ export class Canvas {
             this.addAutomaticSizeListener();
         }
     }
- 
+
     public get ctx() : CanvasRenderingContext2D {
         return this._ctx;
     }

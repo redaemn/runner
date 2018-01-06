@@ -24,7 +24,7 @@ export class App {
 
         this.renderer.addCallback(() => this.canvas.clear());
         this.renderer.addCallback(() => this.rectangle.render());
-        
+
         this.renderer.startLoop();
     }
 }
