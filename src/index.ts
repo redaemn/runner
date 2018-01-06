@@ -1,6 +1,6 @@
-import { App } from "./App";
+import { App } from './App';
 
 window.addEventListener('load', () => {
-    const app = new App();
+    const app: App = new App();
     app.start();
 });

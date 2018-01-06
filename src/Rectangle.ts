@@ -7,23 +7,23 @@ export class Rectangle {
         this.ctx = ctx;
     }
 
-    public moveDown(amount: number = 5) {
+    public moveDown(amount: number = 5): void {
         this.y += amount;
     }
 
-    public moveUp(amount: number = 5) {
+    public moveUp(amount: number = 5): void {
         this.y -= amount;
     }
 
-    public moveLeft(amount: number = 5) {
+    public moveLeft(amount: number = 5): void {
         this.x -= amount;
     }
 
-    public moveRight(amount: number = 5) {
+    public moveRight(amount: number = 5): void {
         this.x += amount;
     }
 
-    public render() {
+    public render(): void {
         this.ctx.fillStyle = 'green';
         this.ctx.fillRect(this.x, this.y, 100, 100);
     }

@@ -1,23 +1,23 @@
 export class Renderer {
-    private callbacks: (() => any)[] = [];
+    private callbacks: Array<() => any> = [];
     private isLoopActive: boolean = false;
     private currentAnimationFrameId: number;
 
-    public addCallback(fn: () => any) {
+    public addCallback(fn: () => any): void {
         this.callbacks.push(fn);
     }
 
-    public startLoop() {
+    public startLoop(): void {
         this.isLoopActive = true;
         this.renderLoop();
     }
 
-    public stopLoop() {
+    public stopLoop(): void {
         this.isLoopActive = false;
         window.cancelAnimationFrame(this.currentAnimationFrameId);
     }
 
-    private renderLoop() {
+    private renderLoop(): void {
         if (!this.isLoopActive) {
             return;
         }
@@ -27,7 +27,7 @@ export class Renderer {
         });
     }
 
-    private executeCallbacks() {
+    private executeCallbacks(): void {
         this.callbacks.forEach((fn) => fn());
     }
 }

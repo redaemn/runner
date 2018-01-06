@@ -5,7 +5,7 @@ export class Canvas {
     private isAutomaticallyResizing: boolean = false;
 
     constructor() {
-        const canvasElements = document.getElementsByTagName('canvas');
+        const canvasElements: NodeListOf<HTMLCanvasElement> = document.getElementsByTagName('canvas');
         if (canvasElements.length > 0) {
             this.canvas = canvasElements[0];
             this.canvas.focus();
@@ -15,11 +15,17 @@ export class Canvas {
         }
     }
 
-    public get ctx() : CanvasRenderingContext2D {
+    public get ctx(): CanvasRenderingContext2D {
         return this._ctx;
     }
 
-    public addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void {
+    public addEventListener<K extends keyof HTMLElementEventMap>(
+        type: K,
+        listener: (
+            this: HTMLCanvasElement,
+            ev: HTMLElementEventMap[K]
+        ) => any,
+        options?: boolean | AddEventListenerOptions): void {
         this.canvas.addEventListener(type, listener, options);
     }
 
@@ -27,7 +33,7 @@ export class Canvas {
         this._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    private setSize() : void {
+    private setSize(): void {
         const width: number = document.documentElement.clientWidth;
         const height: number = document.documentElement.clientHeight;
         this.canvas.width = width;
@@ -43,7 +49,7 @@ export class Canvas {
             window.requestAnimationFrame(() => {
                 this.setSize();
                 this.isAutomaticallyResizing = false;
-            })
+            });
         });
     }
 }

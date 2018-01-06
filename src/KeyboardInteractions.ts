@@ -1,5 +1,5 @@
-import { Rectangle } from "./Rectangle";
-import { Canvas } from "./Canvas";
+import { Canvas } from './Canvas';
+import { Rectangle } from './Rectangle';
 
 export class KeyboardInteractions {
     constructor(private canvas: Canvas, private rectangle: Rectangle) {
@@ -8,33 +8,33 @@ export class KeyboardInteractions {
     /**
      * createInteractions
      */
-    public createInteractions() {
+    public createInteractions(): void {
         this.canvas.addEventListener('keydown', (e) => this.handleKeydown(e));
     }
 
     /**
      * handleKeydown
      */
-    public handleKeydown(event: KeyboardEvent) {
+    public handleKeydown(event: KeyboardEvent): void {
         switch (event.code) {
-            case "KeyS":
-            case "ArrowDown":
-                // Handle "down"
+            case 'KeyS':
+            case 'ArrowDown':
+                // Handle 'down'
                 this.rectangle.moveDown();
                 break;
-            case "KeyW":
-            case "ArrowUp":
-                // Handle "up"
+            case 'KeyW':
+            case 'ArrowUp':
+                // Handle 'up'
                 this.rectangle.moveUp();
                 break;
-            case "KeyA":
-            case "ArrowLeft":
-                // Handle "left"
+            case 'KeyA':
+            case 'ArrowLeft':
+                // Handle 'left'
                 this.rectangle.moveLeft();
                 break;
-            case "KeyD":
-            case "ArrowRight":
-                // Handle "right"
+            case 'KeyD':
+            case 'ArrowRight':
+                // Handle 'right'
                 this.rectangle.moveRight();
                 break;
         }

@@ -1,7 +1,7 @@
-import { Canvas } from "./Canvas";
-import { Rectangle } from "./Rectangle";
-import { Renderer } from "./Renderer";
-import { KeyboardInteractions } from "./KeyboardInteractions";
+import { Canvas } from './Canvas';
+import { KeyboardInteractions } from './KeyboardInteractions';
+import { Rectangle } from './Rectangle';
+import { Renderer } from './Renderer';
 
 export class App {
     private canvas: Canvas;
