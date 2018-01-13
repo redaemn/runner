@@ -30,6 +30,7 @@
       "check-format",
       "allow-leading-underscore",
       "allow-pascal-case"
-    ]
+    ],
+    "max-line-length": false
   }
 }

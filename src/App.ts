@@ -23,7 +23,7 @@ export class App {
         this.keyboardInteractions.createInteractions();
 
         this.renderer.addCallback(() => this.canvas.clear());
-        this.renderer.addCallback(() => this.rectangle.render());
+        this.renderer.addCallback((time: number) => this.rectangle.render(time));
 
         this.renderer.startLoop();
     }

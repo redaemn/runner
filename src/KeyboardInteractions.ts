@@ -10,6 +10,7 @@ export class KeyboardInteractions {
      */
     public createInteractions(): void {
         this.canvas.addEventListener('keydown', (e) => this.handleKeydown(e));
+        this.canvas.addEventListener('keyup', (e) => this.handleKeyup(e));
     }
 
     /**
@@ -20,22 +21,53 @@ export class KeyboardInteractions {
             case 'KeyS':
             case 'ArrowDown':
                 // Handle 'down'
-                this.rectangle.moveDown();
+                // this.rectangle.moveDown();
                 break;
             case 'KeyW':
             case 'ArrowUp':
                 // Handle 'up'
-                this.rectangle.moveUp();
+                // this.rectangle.moveUp();
                 break;
             case 'KeyA':
             case 'ArrowLeft':
                 // Handle 'left'
-                this.rectangle.moveLeft();
+                this.rectangle.startMovingLeft();
                 break;
             case 'KeyD':
             case 'ArrowRight':
                 // Handle 'right'
-                this.rectangle.moveRight();
+                this.rectangle.startMovingRight();
+                break;
+            case 'Space':
+                this.rectangle.jump();
+                break;
+        }
+    }
+
+    /**
+     * handleKeyup
+     */
+    public handleKeyup(event: KeyboardEvent): void {
+        switch (event.code) {
+            case 'KeyS':
+            case 'ArrowDown':
+                // Handle 'down'
+                // this.rectangle.moveDown();
+                break;
+            case 'KeyW':
+            case 'ArrowUp':
+                // Handle 'up'
+                // this.rectangle.moveUp();
+                break;
+            case 'KeyA':
+            case 'ArrowLeft':
+                // Handle 'left'
+                this.rectangle.stopMovingLeft();
+                break;
+            case 'KeyD':
+            case 'ArrowRight':
+                // Handle 'right'
+                this.rectangle.stopMovingRight();
                 break;
         }
     }

@@ -1,9 +1,9 @@
 export class Renderer {
-    private callbacks: Array<() => any> = [];
+    private callbacks: FrameRequestCallback[] = [];
     private isLoopActive: boolean = false;
     private currentAnimationFrameId: number;
 
-    public addCallback(fn: () => any): void {
+    public addCallback(fn: FrameRequestCallback): void {
         this.callbacks.push(fn);
     }
 
@@ -21,13 +21,13 @@ export class Renderer {
         if (!this.isLoopActive) {
             return;
         }
-        this.currentAnimationFrameId = window.requestAnimationFrame(() => {
-            this.executeCallbacks();
+        this.currentAnimationFrameId = window.requestAnimationFrame((time) => {
+            this.executeCallbacks(time);
             this.renderLoop();
         });
     }
 
-    private executeCallbacks(): void {
-        this.callbacks.forEach((fn) => fn());
+    private executeCallbacks(time: number): void {
+        this.callbacks.forEach((fn) => fn(time));
     }
 }
