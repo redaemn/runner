@@ -1,39 +1,64 @@
-import { JumpAction } from './JumpAction';
+import { JumpAction } from './actions/JumpAction';
+import { MovementAction } from './actions/MovementAction';
+import { MovementType } from './actions/MovementType';
 
 export class Rectangle {
     private ctx: CanvasRenderingContext2D;
     private x: number = 30;
     private y: number = 230;
-    private mustJump: boolean = false;
+
+    private startJump: boolean = false;
+    private isJumping: boolean = false;
     private jumpAction: JumpAction = null;
+
+    private startRightMovement: boolean = false;
+    private stopRightMovement: boolean = false;
     private isMovingRight: boolean = false;
+    private moveRightAction: MovementAction = null;
+
+    private startLeftMovement: boolean = false;
+    private stopLeftMovement: boolean = false;
     private isMovingLeft: boolean = false;
+    private moveLeftAction: MovementAction = null;
 
     constructor(ctx: CanvasRenderingContext2D) {
         this.ctx = ctx;
     }
 
     public startMovingLeft(): void {
-        this.isMovingLeft = true;
+        if (!this.isMovingLeft) {
+            this.startLeftMovement = true;
+        } else if (this.stopLeftMovement) {
+            this.startLeftMovement = true;
+            this.stopLeftMovement = false;
+        }
     }
 
     public stopMovingLeft(): void {
-        this.isMovingLeft = false;
+        if (this.isMovingLeft || this.startLeftMovement) {
+            this.stopLeftMovement = true;
+        }
     }
 
     public startMovingRight(): void {
-        this.isMovingRight = true;
+        if (!this.isMovingRight) {
+            this.startRightMovement = true;
+        } else if (this.stopRightMovement) {
+            this.startRightMovement = true;
+            this.stopRightMovement = false;
+        }
     }
 
     public stopMovingRight(): void {
-        this.isMovingRight = false;
+        if (this.isMovingRight || this.startRightMovement) {
+            this.stopRightMovement = true;
+        }
     }
 
     public jump(): void {
-        if (this.jumpAction !== null && !this.jumpAction.isDone) {
-            return;
+        if (!this.isJumping) {
+            this.startJump = true;
         }
-        this.mustJump = true;
     }
 
     public render(time: number): void {
@@ -43,19 +68,45 @@ export class Rectangle {
     }
 
     private update(time: number): void {
-        if (this.mustJump) {
+        if (this.startJump) {
             this.jumpAction = new JumpAction(this.y, time);
-            this.mustJump = false;
+            this.isJumping = true;
+            this.startJump = false;
         }
 
-        if (this.jumpAction !== null && !this.jumpAction.isDone) {
-            this.y = this.jumpAction.step(time);
+        if (this.isJumping) {
+            this.y = this.jumpAction.getCurrentHeight(time);
+            this.isJumping = !this.jumpAction.isDone;
         }
-        if (this.isMovingLeft) {
-            this.x -= 5;
+
+        if (this.startRightMovement && !this.isJumping) {
+            this.moveRightAction = new MovementAction(this.x, time, MovementType.Increase);
+            this.isMovingRight = true;
+            this.startRightMovement = false;
         }
+
+        if (this.stopRightMovement && !this.isJumping) {
+            this.isMovingRight = false;
+            this.stopRightMovement = false;
+        }
+
         if (this.isMovingRight) {
-            this.x += 5;
+            this.x = this.moveRightAction.getCurrentCoordinate(time);
+        }
+
+        if (this.startLeftMovement && !this.isJumping) {
+            this.moveLeftAction = new MovementAction(this.x, time, MovementType.Decrease);
+            this.isMovingLeft = true;
+            this.startLeftMovement = false;
+        }
+
+        if (this.stopLeftMovement && !this.isJumping) {
+            this.isMovingLeft = false;
+            this.stopLeftMovement = false;
+        }
+
+        if (this.isMovingLeft) {
+            this.x = this.moveLeftAction.getCurrentCoordinate(time);
         }
     }
 }

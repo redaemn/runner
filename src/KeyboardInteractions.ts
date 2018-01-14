@@ -18,24 +18,12 @@ export class KeyboardInteractions {
      */
     public handleKeydown(event: KeyboardEvent): void {
         switch (event.code) {
-            case 'KeyS':
-            case 'ArrowDown':
-                // Handle 'down'
-                // this.rectangle.moveDown();
-                break;
-            case 'KeyW':
-            case 'ArrowUp':
-                // Handle 'up'
-                // this.rectangle.moveUp();
-                break;
             case 'KeyA':
             case 'ArrowLeft':
-                // Handle 'left'
                 this.rectangle.startMovingLeft();
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                // Handle 'right'
                 this.rectangle.startMovingRight();
                 break;
             case 'Space':
@@ -49,24 +37,12 @@ export class KeyboardInteractions {
      */
     public handleKeyup(event: KeyboardEvent): void {
         switch (event.code) {
-            case 'KeyS':
-            case 'ArrowDown':
-                // Handle 'down'
-                // this.rectangle.moveDown();
-                break;
-            case 'KeyW':
-            case 'ArrowUp':
-                // Handle 'up'
-                // this.rectangle.moveUp();
-                break;
             case 'KeyA':
             case 'ArrowLeft':
-                // Handle 'left'
                 this.rectangle.stopMovingLeft();
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                // Handle 'right'
                 this.rectangle.stopMovingRight();
                 break;
         }

@@ -6,7 +6,7 @@ export class JumpAction {
     constructor(private startHeight: number, private startTime: number) {
     }
 
-    public step(currentTime: number): number {
+    public getCurrentHeight(currentTime: number): number {
         const time: number = (currentTime - this.startTime);
         const verticalMovement: number = Math.round( (this.JUMP_SPEED * time) - (this.GRAVITY_ACCELERATION * Math.pow(time, 2) / 2) );
         const currentHeight: number = Math.min(this.startHeight - verticalMovement, this.startHeight);
