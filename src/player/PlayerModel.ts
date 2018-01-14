@@ -1,11 +1,11 @@
 import { JumpAction } from '../actions/JumpAction';
 import { MovementAction } from '../actions/MovementAction';
 import { MovementType } from '../actions/MovementType';
+import { Canvas } from '../Canvas';
 
 export class PlayerModel {
-    private ctx: CanvasRenderingContext2D;
     private x: number = 30;
-    private y: number = 230;
+    private y: number = 0;
 
     private startJump: boolean = false;
     private isJumping: boolean = false;
@@ -21,8 +21,7 @@ export class PlayerModel {
     private isMovingLeft: boolean = false;
     private moveLeftAction: MovementAction = null;
 
-    constructor(ctx: CanvasRenderingContext2D) {
-        this.ctx = ctx;
+    constructor(private canvas: Canvas) {
     }
 
     public startMovingLeft(): void {
@@ -63,8 +62,8 @@ export class PlayerModel {
 
     public render(time: number): void {
         this.update(time);
-        this.ctx.fillStyle = 'green';
-        this.ctx.fillRect(this.x, this.y, 50, 50);
+        this.canvas.fillStyle = 'green';
+        this.canvas.fillRect(this.x, this.y, 35, 100);
     }
 
     private update(time: number): void {

@@ -1,6 +1,5 @@
 export class Canvas {
-
-    private _ctx: CanvasRenderingContext2D;
+    private ctx: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
     private isAutomaticallyResizing: boolean = false;
 
@@ -9,14 +8,10 @@ export class Canvas {
         if (canvasElements.length > 0) {
             this.canvas = canvasElements[0];
             this.canvas.focus();
-            this._ctx = this.canvas.getContext('2d');
-            this.setSize();
+            this.ctx = this.canvas.getContext('2d');
+            this.updateSize();
             this.addAutomaticSizeListener();
         }
-    }
-
-    public get ctx(): CanvasRenderingContext2D {
-        return this._ctx;
     }
 
     public addEventListener<K extends keyof HTMLElementEventMap>(
@@ -30,10 +25,26 @@ export class Canvas {
     }
 
     public clear(): void {
-        this._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    private setSize(): void {
+    public set fillStyle(value: string | CanvasGradient | CanvasPattern) {
+        this.ctx.fillStyle = value;
+    }
+
+    public get fillStyle(): string | CanvasGradient | CanvasPattern {
+        return this.ctx.fillStyle;
+    }
+
+    public fillRect(x: number, y: number, w: number, h: number): void {
+        this.ctx.fillRect(x, this.updateY(y, h), w, h);
+    }
+
+    private updateY(originalY: number, height: number = 0): number {
+        return Math.round(-originalY + (this.canvas.height / 2)) - height;
+    }
+
+    private updateSize(): void {
         const width: number = document.documentElement.clientWidth;
         const height: number = document.documentElement.clientHeight;
         this.canvas.width = width;
@@ -47,7 +58,7 @@ export class Canvas {
             }
             this.isAutomaticallyResizing = true;
             window.requestAnimationFrame(() => {
-                this.setSize();
+                this.updateSize();
                 this.isAutomaticallyResizing = false;
             });
         });

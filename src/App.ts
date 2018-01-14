@@ -12,7 +12,7 @@ export class App {
     constructor() {
         this.canvas = new Canvas();
         this.renderer = new Renderer();
-        this.playerModel = new PlayerModel(this.canvas.ctx);
+        this.playerModel = new PlayerModel(this.canvas);
         this.keyboardInteractions = new KeyboardInteractions(this.canvas, this.playerModel);
     }
 

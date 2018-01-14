@@ -9,7 +9,7 @@ export class JumpAction {
     public getCurrentHeight(currentTime: number): number {
         const time: number = (currentTime - this.startTime);
         const verticalMovement: number = Math.round( (this.JUMP_SPEED * time) - (this.GRAVITY_ACCELERATION * Math.pow(time, 2) / 2) );
-        const currentHeight: number = Math.min(this.startHeight - verticalMovement, this.startHeight);
+        const currentHeight: number = Math.max(this.startHeight + verticalMovement, this.startHeight);
         this.jumpDone = time > 0 && currentHeight === this.startHeight;
         return currentHeight;
     }
