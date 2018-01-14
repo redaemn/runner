@@ -1,8 +1,8 @@
 import { Canvas } from './Canvas';
-import { Rectangle } from './Rectangle';
+import { PlayerModel } from './player/PlayerModel';
 
 export class KeyboardInteractions {
-    constructor(private canvas: Canvas, private rectangle: Rectangle) {
+    constructor(private canvas: Canvas, private playerModel: PlayerModel) {
     }
 
     /**
@@ -20,14 +20,14 @@ export class KeyboardInteractions {
         switch (event.code) {
             case 'KeyA':
             case 'ArrowLeft':
-                this.rectangle.startMovingLeft();
+                this.playerModel.startMovingLeft();
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                this.rectangle.startMovingRight();
+                this.playerModel.startMovingRight();
                 break;
             case 'Space':
-                this.rectangle.jump();
+                this.playerModel.jump();
                 break;
         }
     }
@@ -39,11 +39,11 @@ export class KeyboardInteractions {
         switch (event.code) {
             case 'KeyA':
             case 'ArrowLeft':
-                this.rectangle.stopMovingLeft();
+                this.playerModel.stopMovingLeft();
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                this.rectangle.stopMovingRight();
+                this.playerModel.stopMovingRight();
                 break;
         }
     }

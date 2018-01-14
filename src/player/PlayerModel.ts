@@ -1,8 +1,8 @@
-import { JumpAction } from './actions/JumpAction';
-import { MovementAction } from './actions/MovementAction';
-import { MovementType } from './actions/MovementType';
+import { JumpAction } from '../actions/JumpAction';
+import { MovementAction } from '../actions/MovementAction';
+import { MovementType } from '../actions/MovementType';
 
-export class Rectangle {
+export class PlayerModel {
     private ctx: CanvasRenderingContext2D;
     private x: number = 30;
     private y: number = 230;

@@ -1,19 +1,19 @@
 import { Canvas } from './Canvas';
 import { KeyboardInteractions } from './KeyboardInteractions';
-import { Rectangle } from './Rectangle';
+import { PlayerModel } from './player/PlayerModel';
 import { Renderer } from './Renderer';
 
 export class App {
     private canvas: Canvas;
-    private rectangle: Rectangle;
+    private playerModel: PlayerModel;
     private renderer: Renderer;
     private keyboardInteractions: KeyboardInteractions;
 
     constructor() {
         this.canvas = new Canvas();
         this.renderer = new Renderer();
-        this.rectangle = new Rectangle(this.canvas.ctx);
-        this.keyboardInteractions = new KeyboardInteractions(this.canvas, this.rectangle);
+        this.playerModel = new PlayerModel(this.canvas.ctx);
+        this.keyboardInteractions = new KeyboardInteractions(this.canvas, this.playerModel);
     }
 
     /**
@@ -23,7 +23,7 @@ export class App {
         this.keyboardInteractions.createInteractions();
 
         this.renderer.addCallback(() => this.canvas.clear());
-        this.renderer.addCallback((time: number) => this.rectangle.render(time));
+        this.renderer.addCallback((time: number) => this.playerModel.render(time));
 
         this.renderer.startLoop();
     }
