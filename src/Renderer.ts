@@ -22,8 +22,8 @@ export class Renderer {
             return;
         }
         this.currentAnimationFrameId = window.requestAnimationFrame((time) => {
-            this.executeCallbacks(time);
             this.renderLoop();
+            this.executeCallbacks(time);
         });
     }
 

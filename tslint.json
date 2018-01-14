@@ -17,6 +17,7 @@
       "single"
     ],
     "no-unused-variable": true,
+    "no-duplicate-imports": true,
     "trailing-comma": [
       true,
       {
