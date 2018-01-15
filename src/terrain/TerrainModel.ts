@@ -4,24 +4,26 @@ import { MovementType } from '../actions/MovementType';
 import { Canvas } from '../Canvas';
 
 export class TerrainModel {
+    private MOVE_SPEED: number = 5 * 60 / 1000; // pixel / ms
     private ROCKS_ROWS: number = 3;
     private ROCKS_WIDTH: number = 24;
     private ROCKS_HEIGHT: number = 4;
     private HORIZON_START: number = 19;
     private rocks: boolean[][];
+    private movementStartTime: number = 0;
 
     constructor(private canvas: Canvas) {
         this.rocks = this.initializeRocks();
     }
 
     public render(time: number): void {
-        this.update(time);
+        const rocksXMovement: number = this.calculateRocksXMovement(time);
         this.renderHorizon();
-        this.renderRocks();
+        this.renderRocks(rocksXMovement);
     }
 
     private get rocksColumns(): number {
-        return this.canvas.width / this.ROCKS_WIDTH * 2;
+        return Math.round(this.canvas.width / this.ROCKS_WIDTH) * 2;
     }
 
     private renderHorizon(): void {
@@ -29,15 +31,17 @@ export class TerrainModel {
         this.canvas.fillRect(0, this.HORIZON_START, this.canvas.width, 4);
     }
 
-    private renderRocks(): void {
+    private renderRocks(rocksXMovement: number): void {
         this.canvas.fillStyle = 'gray';
         for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
             for (let column: number = 0; column < this.rocksColumns; column++) {
                 if (this.rocks[row][column]) {
                     const y: number = this.HORIZON_START - ((row + 1) * (this.ROCKS_HEIGHT * 3.5));
                     const xDisplacement: number = (row % 2) * (this.ROCKS_WIDTH / 2);
-                    const x: number = xDisplacement + (column * this.ROCKS_WIDTH);
-                    this.canvas.fillRect(x, y, this.ROCKS_WIDTH, this.ROCKS_HEIGHT);
+                    const x: number = -rocksXMovement + xDisplacement + (column * this.ROCKS_WIDTH);
+                    if (x + this.ROCKS_WIDTH >= 0) {
+                        this.canvas.fillRect(x, y, this.ROCKS_WIDTH, this.ROCKS_HEIGHT);
+                    }
                 }
             }
         }
@@ -54,11 +58,35 @@ export class TerrainModel {
         return rocks;
     }
 
-    private update(time: number): void {
-        this.updateRocks(time);
+    private asyncronouslyUpdateRocks(): void {
+        setTimeout(() => {
+            this.splitRocks();
+            this.updateRocks();
+        }, 0);
     }
 
-    private updateRocks(time: number): void {
-        // do nothing
+    private splitRocks(): void {
+        const newRocks: boolean[][] = [];
+        for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
+            newRocks.push(this.rocks[row].slice(this.rocksColumns / 2, this.rocksColumns));
+        }
+        this.rocks = newRocks;
+    }
+
+    private updateRocks(): void {
+        for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
+            for (let column: number = 0; column < this.rocksColumns / 2; column++) {
+                this.rocks[row].push(Math.random() < .2);
+            }
+        }
+    }
+
+    private calculateRocksXMovement(time: number): number {
+        const xMovement: number = this.MOVE_SPEED * (time - this.movementStartTime);
+        if (xMovement >= this.canvas.width) {
+            this.movementStartTime = time;
+            this.asyncronouslyUpdateRocks();
+        }
+        return xMovement;
     }
 }
