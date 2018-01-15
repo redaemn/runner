@@ -25,6 +25,10 @@ export class App {
     public start(): void {
         this.keyboardInteractions.createInteractions();
 
+        this.canvas.onResize(() => {
+            this.terrainModel.reset();
+        });
+
         this.renderer.addCallback(() => this.canvas.clear());
         this.renderer.addCallback((time: number) => this.terrainModel.render(time));
         this.renderer.addCallback((time: number) => this.playerModel.render(time));

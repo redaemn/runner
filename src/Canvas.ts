@@ -1,7 +1,8 @@
 export class Canvas {
     private ctx: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
-    private isAutomaticallyResizing: boolean = false;
+    private isResizing: boolean = false;
+    private onResizeCallbacks: Array<() => void> = [];
 
     constructor() {
         const canvasElements: NodeListOf<HTMLCanvasElement> = document.getElementsByTagName('canvas');
@@ -10,8 +11,12 @@ export class Canvas {
             this.canvas.focus();
             this.ctx = this.canvas.getContext('2d');
             this.updateSize();
-            this.addAutomaticSizeListener();
+            this.addResizeListener();
         }
+    }
+
+    public onResize(fn: () => void): void {
+        this.onResizeCallbacks.push(fn);
     }
 
     public addEventListener<K extends keyof HTMLElementEventMap>(
@@ -55,15 +60,16 @@ export class Canvas {
         this.canvas.height = height;
     }
 
-    private addAutomaticSizeListener(): void {
+    private addResizeListener(): void {
         window.addEventListener('resize', () => {
-            if (this.isAutomaticallyResizing) {
+            if (this.isResizing) {
                 return;
             }
-            this.isAutomaticallyResizing = true;
+            this.isResizing = true;
             window.requestAnimationFrame(() => {
                 this.updateSize();
-                this.isAutomaticallyResizing = false;
+                this.onResizeCallbacks.forEach((fn) => fn());
+                this.isResizing = false;
             });
         });
     }

@@ -13,6 +13,10 @@ export class TerrainModel {
     private movementStartTime: number = 0;
 
     constructor(private canvas: Canvas) {
+        this.reset();
+    }
+
+    public reset(): void {
         this.rocks = this.initializeRocks();
     }
 
