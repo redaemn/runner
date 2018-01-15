@@ -24,6 +24,10 @@ export class Canvas {
         this.canvas.addEventListener(type, listener, options);
     }
 
+    public get width(): number {
+        return this.canvas.width;
+    }
+
     public clear(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -37,10 +41,10 @@ export class Canvas {
     }
 
     public fillRect(x: number, y: number, w: number, h: number): void {
-        this.ctx.fillRect(x, this.updateY(y, h), w, h);
+        this.ctx.fillRect(x, this.recalculateY(y, h), w, h);
     }
 
-    private updateY(originalY: number, height: number = 0): number {
+    private recalculateY(originalY: number, height: number = 0): number {
         return Math.round(-originalY + (this.canvas.height / 2)) - height;
     }
 
