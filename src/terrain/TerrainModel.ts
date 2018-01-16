@@ -2,15 +2,13 @@ import { JumpAction } from '../actions/JumpAction';
 import { MovementAction } from '../actions/MovementAction';
 import { MovementType } from '../actions/MovementType';
 import { Canvas } from '../Canvas';
+import { Rocks } from './Rocks';
 
 export class TerrainModel {
-    private MOVE_SPEED: number = 5 * 60 / 1000; // pixel / ms
+    private MOVE_SPEED: number = 1 * 60 / 1000; // pixel / ms
     private ROCKS_ROWS: number = 3;
-    private ROCKS_WIDTH: number = 24;
-    private ROCKS_HEIGHT: number = 4;
     private HORIZON_START: number = 19;
-    private rocks: boolean[][];
-    private movementStartTime: number = 0;
+    private rocks: Rocks[];
 
     constructor(private canvas: Canvas) {
         this.reset();
@@ -21,13 +19,8 @@ export class TerrainModel {
     }
 
     public render(time: number): void {
-        const rocksXMovement: number = this.calculateRocksXMovement(time);
         this.renderHorizon();
-        this.renderRocks(rocksXMovement);
-    }
-
-    private get rocksColumns(): number {
-        return Math.round(this.canvas.width / this.ROCKS_WIDTH) + 1;
+        this.renderRocks(time);
     }
 
     private renderHorizon(): void {
@@ -35,48 +28,17 @@ export class TerrainModel {
         this.canvas.fillRect(0, this.HORIZON_START, this.canvas.width, 4);
     }
 
-    private renderRocks(rocksXMovement: number): void {
-        this.canvas.fillStyle = 'gray';
-        for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
-            for (let column: number = 0; column < this.rocksColumns; column++) {
-                if (this.rocks[row][column]) {
-                    const y: number = this.HORIZON_START - ((row + 1) * (this.ROCKS_HEIGHT * 3.5));
-                    const xDisplacement: number = (row % 2) * (this.ROCKS_WIDTH / 2);
-                    const x: number = -rocksXMovement - xDisplacement + (column * this.ROCKS_WIDTH);
-                    if (x + this.ROCKS_WIDTH >= 0) {
-                        this.canvas.fillRect(x, y, this.ROCKS_WIDTH, this.ROCKS_HEIGHT);
-                    }
-                }
-            }
-        }
+    private renderRocks(time: number): void {
+        this.rocks.forEach((rocks) => rocks.render(time));
     }
 
-    private initializeRocks(): boolean[][] {
-        const rocks: boolean[][] = [];
+    private initializeRocks(): Rocks[] {
+        const rocks: Rocks[] = [];
         for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
-            rocks.push([]);
-            for (let column: number = 0; column < this.rocksColumns; column++) {
-                rocks[row].push(Math.random() < .2);
-            }
+            const rocksSpeed: number = this.MOVE_SPEED * (row + 2);
+            const yCoordinate: number = this.HORIZON_START - ((row + 1) * 14);
+            rocks.push(new Rocks(this.canvas, rocksSpeed, yCoordinate));
         }
         return rocks;
-    }
-
-    private asyncronouslyUpdateRocks(): void {
-        setTimeout(() => {
-            for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
-                this.rocks[row].shift();
-                this.rocks[row].push(Math.random() < .2);
-            }
-        }, 0);
-    }
-
-    private calculateRocksXMovement(time: number): number {
-        const xMovement: number = this.MOVE_SPEED * (time - this.movementStartTime);
-        if (xMovement >= this.ROCKS_WIDTH) {
-            this.movementStartTime = time;
-            this.asyncronouslyUpdateRocks();
-        }
-        return xMovement;
     }
 }
