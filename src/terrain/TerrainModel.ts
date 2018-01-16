@@ -27,7 +27,7 @@ export class TerrainModel {
     }
 
     private get rocksColumns(): number {
-        return Math.round(this.canvas.width / this.ROCKS_WIDTH) * 2;
+        return Math.round(this.canvas.width / this.ROCKS_WIDTH) + 1;
     }
 
     private renderHorizon(): void {
@@ -42,7 +42,7 @@ export class TerrainModel {
                 if (this.rocks[row][column]) {
                     const y: number = this.HORIZON_START - ((row + 1) * (this.ROCKS_HEIGHT * 3.5));
                     const xDisplacement: number = (row % 2) * (this.ROCKS_WIDTH / 2);
-                    const x: number = -rocksXMovement + xDisplacement + (column * this.ROCKS_WIDTH);
+                    const x: number = -rocksXMovement - xDisplacement + (column * this.ROCKS_WIDTH);
                     if (x + this.ROCKS_WIDTH >= 0) {
                         this.canvas.fillRect(x, y, this.ROCKS_WIDTH, this.ROCKS_HEIGHT);
                     }
@@ -64,30 +64,16 @@ export class TerrainModel {
 
     private asyncronouslyUpdateRocks(): void {
         setTimeout(() => {
-            this.splitRocks();
-            this.updateRocks();
-        }, 0);
-    }
-
-    private splitRocks(): void {
-        const newRocks: boolean[][] = [];
-        for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
-            newRocks.push(this.rocks[row].slice(this.rocksColumns / 2, this.rocksColumns));
-        }
-        this.rocks = newRocks;
-    }
-
-    private updateRocks(): void {
-        for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
-            for (let column: number = 0; column < this.rocksColumns / 2; column++) {
+            for (let row: number = 0; row < this.ROCKS_ROWS; row++) {
+                this.rocks[row].shift();
                 this.rocks[row].push(Math.random() < .2);
             }
-        }
+        }, 0);
     }
 
     private calculateRocksXMovement(time: number): number {
         const xMovement: number = this.MOVE_SPEED * (time - this.movementStartTime);
-        if (xMovement >= this.canvas.width) {
+        if (xMovement >= this.ROCKS_WIDTH) {
             this.movementStartTime = time;
             this.asyncronouslyUpdateRocks();
         }
