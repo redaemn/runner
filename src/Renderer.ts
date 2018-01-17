@@ -21,13 +21,13 @@ export class Renderer {
         if (!this.isLoopActive) {
             return;
         }
-        this.currentAnimationFrameId = window.requestAnimationFrame((time) => {
+        this.currentAnimationFrameId = window.requestAnimationFrame(time => {
             this.renderLoop();
             this.executeCallbacks(time);
         });
     }
 
     private executeCallbacks(time: number): void {
-        this.callbacks.forEach((fn) => fn(time));
+        this.callbacks.forEach(fn => fn(time));
     }
 }

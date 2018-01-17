@@ -68,7 +68,7 @@ export class Canvas {
             this.isResizing = true;
             window.requestAnimationFrame(() => {
                 this.updateSize();
-                this.onResizeCallbacks.forEach((fn) => fn());
+                this.onResizeCallbacks.forEach(fn => fn());
                 this.isResizing = false;
             });
         });

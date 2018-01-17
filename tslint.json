@@ -32,6 +32,7 @@
       "allow-leading-underscore",
       "allow-pascal-case"
     ],
-    "max-line-length": false
+    "max-line-length": false,
+    "arrow-parens": [true, "ban-single-arg-parens"]
   }
 }

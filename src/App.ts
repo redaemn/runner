@@ -30,8 +30,8 @@ export class App {
         });
 
         this.renderer.addCallback(() => this.canvas.clear());
-        this.renderer.addCallback((time: number) => this.terrainModel.render(time));
-        this.renderer.addCallback((time: number) => this.playerModel.render(time));
+        this.renderer.addCallback(time => this.terrainModel.render(time));
+        this.renderer.addCallback(time => this.playerModel.render(time));
 
         this.renderer.startLoop();
     }

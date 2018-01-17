@@ -29,7 +29,7 @@ export class TerrainModel {
     }
 
     private renderRocks(time: number): void {
-        this.rocks.forEach((rocks) => rocks.render(time));
+        this.rocks.forEach(rocks => rocks.render(time));
     }
 
     private initializeRocks(): Rocks[] {

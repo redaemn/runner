@@ -9,8 +9,8 @@ export class KeyboardInteractions {
      * createInteractions
      */
     public createInteractions(): void {
-        this.canvas.addEventListener('keydown', (e) => this.handleKeydown(e));
-        this.canvas.addEventListener('keyup', (e) => this.handleKeyup(e));
+        this.canvas.addEventListener('keydown', e => this.handleKeydown(e));
+        this.canvas.addEventListener('keyup', e => this.handleKeyup(e));
     }
 
     /**
